@@ -7,12 +7,46 @@
 // 5. Create a function called checkStock which returns true if the item is available and false otherwise.
 var inventory = [];
 function addItem(itemId, itemName, quantity, isAvailable) {
+    var newDetail = [itemName, quantity, isAvailable];
+    var newItem = { itemId: itemId, details: newDetail };
+    inventory.push(newItem);
+    return newItem;
 }
 function updateStock(itemId, quantity) {
+    var thisItem;
+    for (var i = 0; i < inventory.length; i++) {
+        if (inventory[i].itemId === itemId) {
+            thisItem = inventory[i];
+            break;
+        }
+    }
+    if (!thisItem) {
+        return 'Item not found';
+    }
+    thisItem.details[1] = quantity;
+    return "Stock updated for ".concat(thisItem.details[0], ", new quantity: ").concat(thisItem.details[1]);
 }
 function checkStock(itemId) {
+    var thisItem;
+    for (var i = 0; i < inventory.length; i++) {
+        if (inventory[i].itemId === itemId) {
+            thisItem = inventory[i];
+            break;
+        }
+    }
+    if (!thisItem) {
+        return 'Item not found';
+    }
+    if (thisItem.details[1] > 0) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 // Test cases (Create more if needed)
 console.log(addItem(1, "Laptop", 5, true)); // { itemId: 1, details: ["Laptop", 5, true] }
+console.log(inventory);
 console.log(updateStock(1, 3)); // "Stock updated for Laptop, new quantity: 3"
 console.log(checkStock(1)); // true
+console.log(inventory);

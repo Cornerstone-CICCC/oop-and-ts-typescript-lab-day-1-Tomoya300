@@ -8,24 +8,59 @@
 type ItemDetails = [string, number, boolean]
 
 type InventoryItem = {
-
+    itemId: number,
+    details: ItemDetails,
 }
 
 const inventory: InventoryItem[] = [];
 
-function addItem(itemId, itemName, quantity, isAvailable) {
-
+function addItem(itemId: number, itemName: string, quantity: number, isAvailable: boolean): InventoryItem {
+    let newDetail: ItemDetails = [itemName, quantity, isAvailable]
+    let newItem = { itemId, details: newDetail }
+    inventory.push(newItem)
+    return newItem
 }
 
-function updateStock(itemId, quantity) {
+function updateStock(itemId: number, quantity: number): string {
+    let thisItem: InventoryItem | undefined
+    for (let i = 0; i < inventory.length; i++) {
+        if (inventory[i].itemId === itemId) {
+            thisItem = inventory[i]
+            break
+        }
+    }
 
+    if (!thisItem) {
+        return 'Item not found'
+    }
+
+    thisItem.details[1] = quantity
+    return `Stock updated for ${thisItem.details[0]}, new quantity: ${thisItem.details[1]}`
 }
 
-function checkStock(itemId) {
+function checkStock(itemId: number): boolean | string {
+    let thisItem: InventoryItem | undefined
+    for (let i = 0; i < inventory.length; i++) {
+        if (inventory[i].itemId === itemId) {
+            thisItem = inventory[i]
+            break
+        }
+    }
 
+    if (!thisItem) {
+        return 'Item not found'
+    }
+
+    if (thisItem.details[1] > 0) {
+        return true
+    } else {
+        return false
+    }
 }
 
 // Test cases (Create more if needed)
 console.log(addItem(1, "Laptop", 5, true)) // { itemId: 1, details: ["Laptop", 5, true] }
+console.log(inventory)
 console.log(updateStock(1, 3)) // "Stock updated for Laptop, new quantity: 3"
 console.log(checkStock(1)) // true
+console.log(inventory)
