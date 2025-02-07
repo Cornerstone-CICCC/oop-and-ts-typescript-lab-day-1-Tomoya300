@@ -7,8 +7,8 @@
 // 6. Implement a function `closeAccount` that removes an account from the array and returns a confirmation string.
 
 enum TransactionType {
-  Deposit,
-  Withdraw
+  Deposit = 'Deposit',
+  Withdraw = 'Withdraw'
 }
 
 type Transaction = {
@@ -28,28 +28,103 @@ type BankAccount = {
 
 const accounts: BankAccount[] = [];
 
-function createAccount(accountNo, firstname, lastname, initialDeposit, isActive = true) {
-
+function createAccount(accountNo: number, firstname: string, lastname: string, initialDeposit: number, isActive = true, transactions: Transaction[] = []): BankAccount {
+  let balance = initialDeposit
+  let newAccount = { accountNo, firstname, lastname, balance, isActive, transactions }
+  accounts.push(newAccount)
+  return newAccount
 }
 
-function processTransaction(accountNo, amount, transactionType) {
+function processTransaction(accountNo: number, amount: number, transactionType: TransactionType): string {
+  let thisAccount: BankAccount | undefined  
+    for (let i = 0; i < accounts.length; i++) {
+      if (accounts[i].accountNo === accountNo) {
+        thisAccount = accounts[i]
+        break;
+      }
+    }
+    if (!thisAccount) {
+      return 'Account not found.'
+    }
 
+  if (transactionType === TransactionType.Deposit) {
+    thisAccount.balance += amount
+    let newTransaction = { accountNo: thisAccount.accountNo, amount, type: TransactionType.Deposit}
+    thisAccount.transactions.push(newTransaction)
+    return `${amount} deposited into account number ${accountNo}.`
+
+  } else if (transactionType === TransactionType.Withdraw) {
+    if (thisAccount.balance > amount && amount !== 0) {
+      thisAccount.balance -= amount
+      let newTransaction = { accountNo: thisAccount.accountNo, amount, type: TransactionType.Withdraw}
+      thisAccount.transactions.push(newTransaction)
+      return `${amount} withdrawn from account number ${accountNo}.`
+    } else {
+      return 'Insufficient funds for withdrawal'
+    }
+  } else {
+    return 'Invalid transaction type'
+  }
 }
 
-function getBalance(accountNo) {
-
+function getBalance(accountNo: number): number | string {
+  let thisAccount: BankAccount | undefined
+  for (let i = 0; i < accounts.length; i++) {
+    if (accounts[i].accountNo === accountNo) {
+      thisAccount = accounts[i]
+    }
+  }
+  
+  if (!thisAccount) {
+    return 'Account not found'
+  }
+  return thisAccount.balance
 }
 
-function getTransactionHistory(accountNo) {
+function getTransactionHistory(accountNo: number): Transaction[] | string {
+  let thisAccount: BankAccount | undefined
+  for (let i = 0; i < accounts.length; i++) {
+    if (accounts[i].accountNo === accountNo) {
+      thisAccount = accounts[i]
+    }
+  }
 
+  if (!thisAccount) {
+    return 'Account not found.'
+  }
+
+  return thisAccount.transactions
 }
 
-function checkActiveStatus(accountNo) {
+function checkActiveStatus(accountNo: number) {
+  let thisAccount: BankAccount | undefined
+  for (let i = 0; i < accounts.length; i++) {
+    if (accounts[i].accountNo === accountNo) {
+      thisAccount = accounts[i]
+    }
+  }
+  
+  if (!thisAccount) {
+    return 'Account not found'
+  }
 
+  return thisAccount.isActive
 }
 
-function closeAccount(accountNo) {
+function closeAccount(accountNo: number): string {
+  let thisAccount: BankAccount | undefined
+  for (let i = 0; i < accounts.length; i++) {
+    if (accounts[i].accountNo === accountNo) {
+      thisAccount = accounts[i]
+    }
+  }
+  
+  if (!thisAccount) {
+    return 'Account not found'
+  }
 
+  accounts.filter(account => account.accountNo !== accountNo)
+  return `Account number ${accountNo} closed.`
 }
 
 // Test cases (students should add more)
