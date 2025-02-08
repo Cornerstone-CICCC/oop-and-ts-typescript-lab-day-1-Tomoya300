@@ -26,11 +26,11 @@ type BankAccount = {
   transactions: Transaction[]
 }
 
-const accounts: BankAccount[] = [];
+let accounts: BankAccount[] = [];
 
 function createAccount(accountNo: number, firstname: string, lastname: string, initialDeposit: number, isActive = true, transactions: Transaction[] = []): BankAccount {
   let balance = initialDeposit
-  let newAccount = { accountNo, firstname, lastname, balance, isActive, transactions }
+  let newAccount: BankAccount = { accountNo, firstname, lastname, balance, isActive, transactions }
   accounts.push(newAccount)
   return newAccount
 }

@@ -8,15 +8,64 @@
 // 6. Create a function called getStudent which returns a student’s information based on studentId.
 var students = [];
 function addStudent(studentId, name, age, subjects, status) {
+    var newStudent = { studentId: studentId, name: name, age: age, subjects: subjects, status: status };
+    students.push(newStudent);
+    return newStudent;
 }
 function updateStatus(studentId, status) {
+    var thisStudent;
+    for (var i = 0; i < students.length; i++) {
+        if (students[i].studentId === studentId) {
+            thisStudent = students[i];
+            break;
+        }
+    }
+    if (!thisStudent) {
+        return 'Student not found.';
+    }
+    if (status === 'active') {
+        thisStudent.status = 'active';
+        return "".concat(thisStudent.name, " is active.");
+    }
+    else if (status === 'dropped') {
+        thisStudent.status = 'dropped';
+        return "".concat(thisStudent.name, " has been dropped.");
+    }
+    else {
+        thisStudent.status = 'graduated';
+        return "".concat(thisStudent.name, " has graduated.");
+    }
 }
 function addSubject(studentId, subject) {
+    var thisStudent;
+    for (var i = 0; i < students.length; i++) {
+        if (students[i].studentId === studentId) {
+            thisStudent = students[i];
+            break;
+        }
+    }
+    if (!thisStudent) {
+        return 'Student not found.';
+    }
+    thisStudent.subjects.push(subject);
+    return "".concat(subject, " added to ").concat(thisStudent.name, "'s subjects.");
 }
 function getStudent(studentId) {
+    var thisStudent;
+    for (var i = 0; i < students.length; i++) {
+        if (students[i].studentId === studentId) {
+            thisStudent = students[i];
+            break;
+        }
+    }
+    if (!thisStudent) {
+        return 'Student not found.';
+    }
+    return thisStudent;
 }
 // Test cases (Create more if needed)
 console.log(addStudent(1, "Alice", 20, ["Math", "Science"], "active")); // { studentId: 1, name: "Alice", age: 20, subjects: ["Math", "Science"], status: "active" }
 console.log(updateStatus(1, "graduated")); // "Alice has graduated"
+console.log(updateStatus(1, "active"));
 console.log(addSubject(1, "History")); // "History added to Alice's subjects"
 console.log(getStudent(1)); // { studentId: 1, name: "Alice", age: 20, subjects: ["Math", "Science", "History"], status: "graduated" }

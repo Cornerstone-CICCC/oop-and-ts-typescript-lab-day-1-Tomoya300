@@ -10,18 +10,103 @@
 var BookGenre;
 (function (BookGenre) {
     BookGenre[BookGenre["Fantasy"] = 0] = "Fantasy";
-    // add 4 more
+    BookGenre[BookGenre["Mistery"] = 1] = "Mistery";
+    BookGenre[BookGenre["SF"] = 2] = "SF";
+    BookGenre[BookGenre["Comedy"] = 3] = "Comedy";
+    BookGenre[BookGenre["Romance"] = 4] = "Romance";
+    BookGenre[BookGenre["Family"] = 5] = "Family";
+    BookGenre[BookGenre["NonFiction"] = 6] = "NonFiction";
 })(BookGenre || (BookGenre = {}));
 var library = [];
 function addBook(bookId, title, author, genre) {
+    var newBook = { bookId: bookId, title: title, author: author, genre: genre, isAvailable: true };
+    library.push(newBook);
+    return newBook;
 }
 function borrowBook(bookId) {
+    var thisBook;
+    if (library.length > 0) {
+        for (var i = 0; i < library.length; i++) {
+            if (library[i].bookId === bookId) {
+                thisBook = library[i];
+                break;
+            }
+        }
+        if (!thisBook) {
+            return 'Book not found.';
+        }
+    }
+    else {
+        return 'Library is empty.';
+    }
+    if (thisBook.isAvailable === true) {
+        thisBook.isAvailable = false;
+        return "".concat(thisBook.title, " has been borrowed.");
+    }
+    else {
+        return "".concat(thisBook.title, " not available.");
+    }
 }
 function returnBook(bookId) {
+    var thisBook;
+    if (library.length > 0) {
+        for (var i = 0; i < library.length; i++) {
+            if (library[i].bookId === bookId) {
+                thisBook = library[i];
+                break;
+            }
+        }
+        if (!thisBook) {
+            return 'Book not found.';
+        }
+    }
+    else {
+        return 'Library is empty.';
+    }
+    thisBook.isAvailable = true;
+    return "".concat(thisBook.title, " has been returned.");
 }
 function checkAvailability(bookId) {
+    var thisBook;
+    if (library.length > 0) {
+        for (var i = 0; i < library.length; i++) {
+            if (library[i].bookId === bookId) {
+                thisBook = library[i];
+                break;
+            }
+        }
+        if (!thisBook) {
+            return 'Book not found.';
+        }
+    }
+    else {
+        return 'Library is empty.';
+    }
+    if (thisBook.isAvailable === true) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 function removeBook(bookId) {
+    var thisBook;
+    if (library.length > 0) {
+        for (var i = 0; i < library.length; i++) {
+            if (library[i].bookId === bookId) {
+                thisBook = library[i];
+                break;
+            }
+        }
+        if (!thisBook) {
+            return 'Book not found.';
+        }
+    }
+    else {
+        return 'Library is empty.';
+    }
+    library = library.filter(function (book) { return book.bookId !== thisBook.bookId; });
+    return "".concat(thisBook.title, " has been removed from the library.");
 }
 // Test cases (Create more if needed)
 console.log(addBook(1, "The Hobbit", "J.R.R. Tolkien", BookGenre.Fantasy)); // { bookId: 1, title: "The Hobbit", author: "J.R.R. Tolkien", genre: BookGenre.Fantasy, isAvailable: true }
@@ -29,3 +114,5 @@ console.log(borrowBook(1)); // "The Hobbit has been borrowed"
 console.log(checkAvailability(1)); // false
 console.log(returnBook(1)); // "The Hobbit has been returned"
 console.log(removeBook(1)); // "The Hobbit has been removed from the library"
+console.log(library);
+console.log(checkAvailability(1));

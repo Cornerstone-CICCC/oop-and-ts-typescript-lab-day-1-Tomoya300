@@ -12,11 +12,11 @@ type InventoryItem = {
     details: ItemDetails,
 }
 
-const inventory: InventoryItem[] = [];
+let inventory: InventoryItem[] = [];
 
 function addItem(itemId: number, itemName: string, quantity: number, isAvailable: boolean): InventoryItem {
     let newDetail: ItemDetails = [itemName, quantity, isAvailable]
-    let newItem = { itemId, details: newDetail }
+    let newItem: InventoryItem = { itemId, details: newDetail }
     inventory.push(newItem)
     return newItem
 }

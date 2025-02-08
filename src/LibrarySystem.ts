@@ -9,33 +9,115 @@
 
 enum BookGenre {
   Fantasy,
-  // add 4 more
+  Mistery,
+  SF,
+  Comedy,
+  Romance,
+  Family,
+  NonFiction
 }
 
 type Book = {
-
+  bookId: number,
+  title: string,
+  author: string,
+  genre: BookGenre,
+  isAvailable: boolean
 }
 
-const library: Book[] = [];
+let library: Book[] = [];
 
-function addBook(bookId, title, author, genre) {
-
+function addBook(bookId: number, title: string, author: string, genre: BookGenre): Book {
+  let newBook: Book = { bookId, title, author, genre, isAvailable: true }
+  library.push(newBook)
+  return newBook
 }
 
-function borrowBook(bookId) {
+function borrowBook(bookId: number): string {
+  let thisBook: Book | undefined
+  if (library.length > 0) {
+    for (let i = 0; i < library.length; i++) {
+      if (library[i].bookId === bookId) {
+        thisBook = library[i]
+        break
+      }
+    }
+    if (!thisBook) {
+      return 'Book not found.'
+    }
+  } else {
+    return 'Library is empty.'
+  }
 
+  if (thisBook.isAvailable === true) {
+    thisBook.isAvailable = false
+    return `${thisBook.title} has been borrowed.`
+  } else {
+    return `${thisBook.title} not available.`
+  }
 }
 
-function returnBook(bookId) {
+function returnBook(bookId: number): string {
+  let thisBook: Book | undefined
+  if (library.length > 0) {
+    for (let i = 0; i < library.length; i++) {
+      if (library[i].bookId === bookId) {
+        thisBook = library[i]
+        break
+      }
+    }
+    if (!thisBook) {
+      return 'Book not found.'
+    }
+  } else {
+    return 'Library is empty.'
+  }
 
+  thisBook.isAvailable = true
+  return `${thisBook.title} has been returned.`
 }
 
-function checkAvailability(bookId) {
+function checkAvailability(bookId: number): boolean | string {
+  let thisBook: Book | undefined
+  if (library.length > 0) {
+    for (let i = 0; i < library.length; i++) {
+      if (library[i].bookId === bookId) {
+        thisBook = library[i]
+        break
+      }
+    }
+    if (!thisBook) {
+      return 'Book not found.'
+    }
+  } else {
+    return 'Library is empty.'
+  }
 
+  if (thisBook.isAvailable === true) {
+    return true
+  } else {
+    return false
+  }
 }
 
-function removeBook(bookId) {
+function removeBook(bookId: number): string {
+  let thisBook: Book | undefined
+  if (library.length > 0) {
+    for (let i = 0; i < library.length; i++) {
+      if (library[i].bookId === bookId) {
+        thisBook = library[i]
+        break
+      }
+    }
+    if (!thisBook) {
+      return 'Book not found.'
+    }
+  } else {
+    return 'Library is empty.'
+  }
 
+  library = library.filter(book => book.bookId !== thisBook.bookId)
+  return `${thisBook.title} has been removed from the library.`
 }
 
 // Test cases (Create more if needed)
@@ -44,3 +126,5 @@ console.log(borrowBook(1)) // "The Hobbit has been borrowed"
 console.log(checkAvailability(1)) // false
 console.log(returnBook(1)) // "The Hobbit has been returned"
 console.log(removeBook(1)) // "The Hobbit has been removed from the library"
+console.log(library)
+console.log(checkAvailability(1))

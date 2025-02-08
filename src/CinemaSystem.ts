@@ -23,10 +23,10 @@ type Movie = {
   availableSeats: Seat[]
 }
 
-const movies: Movie[] = [];
+let movies: Movie[] = [];
 
 function addMovie(movieId: number, title: string, genre: MovieGenre, availableSeats: Seat[]): Movie {
-  let newMovie = { movieId, title, genre, availableSeats }
+  let newMovie: Movie = { movieId, title, genre, availableSeats }
   movies.push(newMovie)
   return newMovie
 }
